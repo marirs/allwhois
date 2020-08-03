@@ -5,6 +5,7 @@ All Whois
 [![codecov](https://codecov.io/gh/marirs/allwhois/branch/master/graph/badge.svg)](https://codecov.io/gh/marirs/allwhois)
 ![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macOS-orange)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/quart-motor)
+[![GitHub license](https://img.shields.io/github/license/marirs/allwhois)](https://github.com/marirs/allwhois/blob/master/LICENSE)
 
 A Python package for retrieving WHOIS information of domains.
 
