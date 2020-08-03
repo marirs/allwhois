@@ -1,6 +1,8 @@
 All Whois
 ============
 
+[![Build Status](https://travis-ci.org/marirs/allwhois.svg?branch=master)](https://travis-ci.org/marirs/allwhois)
+[![codecov](https://codecov.io/gh/marirs/allwhois/branch/master/graph/badge.svg)](https://codecov.io/gh/marirs/allwhois)
 ![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macOS-orange)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/quart-motor)
 
