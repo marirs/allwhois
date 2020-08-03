@@ -8,9 +8,9 @@ test_domains = {
         "com", "net", "org", "biz", "com.ua", "com.tr", "com.sa", "com.ua", "com.br", "com.pe",
         "us", "ai", "io", "ca", "uz", "jp", "at", "co", "ee", "tv", "kg", "hn", "am", "by", "kz",
         "mx", "lu", "lv", "cz", "it", "ie", "be", "me", "eu", "ru", "cc", "do", "de", "pl", "fi",
-        "fr", "in", "cn",
-        "co.ve", "co.cr", "co.id", "co.il", "co.uk", "co.jp",
-        "name", "info", "space", "online", "link", "mobi"
+        "fr", "in", "cn", "tw", "ro", "sk", "nl", "cat", "hk",
+        "co.ve", "co.cr", "co.id", "co.il", "co.uk", "co.jp", "com.hk"
+        "name", "info", "space", "online", "link", "mobi", "jobs"
     ],
     'northampton': ["ac.uk"],
     'ox': ["ac.uk"],
@@ -26,7 +26,7 @@ test_domains = {
 def _domain_query(domain: str):
     response = whois.query(domain, date_as_string=True)
     print(f"Query: {domain}")
-    pprint(response)
+    print(response)
     print("--" * 10)
     print("")
     return response
