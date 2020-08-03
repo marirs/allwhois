@@ -37,3 +37,9 @@ class TestDomainLookups:
         assert result["domain_info"]["name"].lower() == "example.com"
         assert result["domain_info"] == lookup_results['example_com']["domain_info"]
 
+    def test_fabulous_com(self):
+        domain = "fabulous.com"
+        result = whois.query(domain, date_as_string=True)
+        assert result["msg"] == "success"
+        assert result["domain_info"]["name"].lower() == "fabulous.com"
+        assert result["domain_info"] == lookup_results['fabulous_com']["domain_info"]
