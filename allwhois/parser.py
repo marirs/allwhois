@@ -11,27 +11,27 @@ from .normalise import _dedupe_list
 
 _patterns = {
     'delim_generic': re.compile(
-        r"^(Last updated on|"
-        r"Technical Contacts|"
-        r"Admin Contact|"
-        r"Nameservers|"
-        r"Registrant|"
-        r"Registrar|"
-        r"address|"
-        r"DNSSEC|"
-        r"Holder|"
-        r"Tech)"
-        r"[^:]*$",
-        re.MULTILINE | re.IGNORECASE
+        r"^(Last updated on|"               # pylint: disable=C0330
+        r"Technical Contacts|"              # pylint: disable=C0330
+        r"Admin Contact|"                   # pylint: disable=C0330
+        r"Nameservers|"                     # pylint: disable=C0330
+        r"Registrant|"                      # pylint: disable=C0330
+        r"Registrar|"                       # pylint: disable=C0330
+        r"address|"                         # pylint: disable=C0330
+        r"DNSSEC|"                          # pylint: disable=C0330
+        r"Holder|"                          # pylint: disable=C0330
+        r"Tech)"                            # pylint: disable=C0330
+        r"[^:]*$",                          # pylint: disable=C0330
+        re.MULTILINE | re.IGNORECASE        # pylint: disable=C0330
     ),
-    'delim_sq': re.compile(r"(^(?:[a-z]\.\s+|)\[[^]]+\])", re.MULTILINE),
-    'alpha_start': re.compile(r"^(\w\.\s)\["),
-    'star_start': re.compile(f"(^\*+\s*[\w\-\/\t\.\(\)\\ ]+)(?=\:):", re.MULTILINE),
-    'dotted_end': re.compile(r"([\w\-]+\.[\w\-]+\.[\w\-]+\.[\s$]|\:.*\.$)", re.MULTILINE),
-    'non_email_val': re.compile(r"^(.*: please query the .*)\n?", re.MULTILINE | re.IGNORECASE),
-    'ipv4or6': re.compile(r"([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})|(([a-f0-9:]+:+)+[a-f0-9]+)"),
-    'field': re.compile(r"(^[\w\-\/\t\'\.\(\) ]+)(?=\:):(?![0-9a-fA-F]{1,4}\:)", re.MULTILINE | re.IGNORECASE),
-    'alt_field': re.compile(r"(^[^\t][\w\-\/\t\'\.\(\) ]+)[\\t]*(?=\:):(?![0-9a-fA-F]{1,4}\:)", re.MULTILINE | re.IGNORECASE),
+    'delim_sq': re.compile(r"(^(?:[a-z]\.\s+|)\[[^]]+\])", re.MULTILINE),  # pylint: disable=W1401
+    'alpha_start': re.compile(r"^(\w\.\s)\["),  # pylint: disable=W1401
+    'star_start': re.compile(r"(^\*+\s*[\w\-\/\t\.\(\)\\ ]+)(?=\:):", re.MULTILINE),  # pylint: disable=W1401
+    'dotted_end': re.compile(r"([\w\-]+\.[\w\-]+\.[\w\-]+\.[\s$]|\:.*\.$)", re.MULTILINE),  # pylint: disable=W1401
+    'non_email_val': re.compile(r"^(.*: please query the .*)\n?", re.MULTILINE | re.IGNORECASE),  # pylint: disable=W1401
+    'ipv4or6': re.compile(r"([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})|(([a-f0-9:]+:+)+[a-f0-9]+)"),                      # pylint: disable=C0301, W1401
+    'field': re.compile(r"(^[\w\-\/\t\'\.\(\) ]+)(?=\:):(?![0-9a-fA-F]{1,4}\:)", re.MULTILINE | re.IGNORECASE),                 # pylint: disable=C0301, W1401
+    'alt_field': re.compile(r"(^[^\t][\w\-\/\t\'\.\(\) ]+)[\\t]*(?=\:):(?![0-9a-fA-F]{1,4}\:)", re.MULTILINE | re.IGNORECASE),  # pylint: disable=C0301, W1401
     'key': re.compile(r"\s\w*~")
 }
 discard_prefix = (
@@ -47,7 +47,7 @@ discard_words = (
 )
 
 
-class Parser:
+class Parser:  # pylint: disable=C0115, R0903
 
     @staticmethod
     def _scrub(raw: str) -> str:
@@ -130,7 +130,7 @@ class Parser:
         return output
 
     @staticmethod
-    def _fixes(data: dict) -> dict:
+    def _fixes(data: dict) -> dict:  # pylint: disable=R0912, R0915
         if 'created' in data:
             # move created to createDate, as created has
             # conflicts with different domains outputs
@@ -200,7 +200,8 @@ class Parser:
 
         if 'e_mail' in data:
             if isinstance(data['e_mail'], list):
-                data['email'] = ', '.join([elem.replace(' AT ', '@') for elem in _dedupe_list(data['e_mail'])])
+                data['email'] = ', '.join([elem.replace(' AT ', '@')
+                                           for elem in _dedupe_list(data['e_mail'])])
                 data.pop('e_mail', None)
 
         if 'fax' in data:
@@ -215,7 +216,9 @@ class Parser:
             elif isinstance(data['domain_servers_in_listed_order'], list):
                 data['domain_servers_in_listed_order'].append(data['name_server'])
                 data.pop('name_server', None)
-                data['domain_servers_in_listed_order'] = [e for e in data['domain_servers_in_listed_order'] if e != '.']
+                data['domain_servers_in_listed_order'] = [
+                    e for e in data['domain_servers_in_listed_order'] if e != '.'
+                ]
             else:
                 data['name_server'] += data['domain_servers_in_listed_order']
                 data.pop('domain_servers_in_listed_order', None)
@@ -235,14 +238,14 @@ class Parser:
                 # with a number/digit; ignore it
                 return match.group(1)+":"
 
-            val = val.replace(
-                " ", "_").replace(
-                "-", "_").replace(
-                "/", "_").replace(
-                ".", "").replace(
-                "[", "").replace(
-                "]", "").replace(
-                "'s", "")
+            val = val.replace(          # pylint: disable=C0330
+                " ", "_").replace(      # pylint: disable=C0330
+                "-", "_").replace(      # pylint: disable=C0330
+                "/", "_").replace(      # pylint: disable=C0330
+                ".", "").replace(       # pylint: disable=C0330
+                "[", "").replace(       # pylint: disable=C0330
+                "]", "").replace(       # pylint: disable=C0330
+                "'s", "")               # pylint: disable=C0330
             return f'{val}~'
 
         dict_o = {}

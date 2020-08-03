@@ -17,13 +17,37 @@ template0 = {
     # Unified Key: [Keys from various sources]
     'domain_name': ['domainName', 'domain', 'domainname'],
     'domain_canonical_name': ['canonical_name'],
-    'domain_created_date': ['domain_name_commencement_date', 'domain_created', 'createDate', 'createdDate', 'connected_date', 'registered', 'registered_date', 'created_on', 'registered_on', 'registration_time', 'domain_record_activated', 'entry_created', 'create_date', 'creation_date', 'record_created'],
-    'domain_expiry_date': ['validity', 'valid_until', 'expiration_date', 'expire', 'expire_date', 'renewal_date', 'expiry_date', 'domain_expires', 'expired_date', 'paid_till', 'expires', 'expiration_time', 'expires_on', 'expiresDate', 'registry_expiry_date', 'expires_date', 'record_expires_on'],
-    'domain_updated_date': ['updated_on', 'last_updated_on', 'updateDate', 'updatedDate', 'update_date', 'updated', 'entry_updated', 'domain_record_last_updated', 'modified', 'last_updated', 'updated_date', 'last_update', 'last_modified', 'record_last_updated_on'],
-    'domain_name_servers': ['dns', 'servers', 'nserver', 'domain_servers', 'name_servers', 'name_server_', 'domain_servers_in_listed_order', 'name_servers_in_the_listed_order', 'name_server_information', 'nameserver', 'nameservers', 'name_server', 'dns_servers', 'name_servers_information'],
-    'domain_status': ['epp_status', 'flags', 'domainStatus', 'registration_status', 'state', 'domain_status_', 'status', 'domain_status'],
+    'domain_created_date': [
+        'domain_name_commencement_date', 'domain_created', 'createDate',
+        'createdDate', 'connected_date', 'registered', 'registered_date',
+        'created_on', 'registered_on', 'registration_time',
+        'domain_record_activated', 'entry_created', 'create_date',
+        'creation_date', 'record_created'
+    ],
+    'domain_expiry_date': [
+        'validity', 'valid_until', 'expiration_date', 'expire', 'expire_date', 'renewal_date',
+        'expiry_date', 'domain_expires', 'expired_date', 'paid_till', 'expires', 'expiration_time',
+        'expires_on', 'expiresDate', 'registry_expiry_date', 'expires_date', 'record_expires_on'
+    ],
+    'domain_updated_date': [
+        'updated_on', 'last_updated_on', 'updateDate', 'updatedDate', 'update_date', 'updated',
+        'entry_updated', 'domain_record_last_updated', 'modified', 'last_updated', 'updated_date',
+        'last_update', 'last_modified', 'record_last_updated_on'
+    ],
+    'domain_name_servers': [
+        'dns', 'servers', 'nserver', 'domain_servers', 'name_servers', 'name_server_',
+        'domain_servers_in_listed_order', 'name_servers_in_the_listed_order',
+        'name_server_information', 'nameserver', 'nameservers', 'name_server', 'dns_servers',
+        'name_servers_information'
+    ],
+    'domain_status': [
+        'epp_status', 'flags', 'domainStatus', 'registration_status', 'state', 'domain_status_',
+        'status', 'domain_status'
+    ],
     'contact_email': ['contactEmail'],
-    'registrant_name': ['domain_owner', 'registrant', 'registrant_contact', 'organization', 'owner', 'owner_name'],
+    'registrant_name': [
+        'domain_owner', 'registrant', 'registrant_contact', 'organization', 'owner', 'owner_name'
+    ],
     'registrant_id': ['ownerid', 'org_id', 'owner_id'],
     'registrant_country_code': ['owner_country_code'],
     'registrant_email': ['owner_email'],
@@ -32,7 +56,9 @@ template0 = {
     'registrant_zipcode': ['owner_zipcode'],
     'registrant_type': ['organization_type'],
     'registrant_address': ['address_loc', 'descr', 'owner_address'],
-    'registrar_name': ['domain_registrar_name', 'registrar', 'sponsoring_registrar_name', 'registrarName'],
+    'registrar_name': [
+        'domain_registrar_name', 'registrar', 'sponsoring_registrar_name', 'registrarName'
+    ],
     'registrar_id': ['sponsoring_registrar_pandi_id', 'sponsoring_registrar_id'],
     'registrar_city': ['sponsoring_registrar_city'],
     'registrar_state_province': ['sponsoring_registrar_state_province'],
@@ -81,33 +107,42 @@ epp_codes = {
     'redemptionPeriod': ['REDEMPTION PERIOD', 'REDEMPTIONPERIOD'],
     'renewPeriod': ['RENEW PERIOD', 'RENEWPERIOD'],
     'updateProhibited': ['Update forbidden'],
-    'serverDeleteProhibited': ['SERVER DELETE PROHIBITED', 'SERVERDELETEPROHIBITED', 'Deletion forbidden'],
+    'serverDeleteProhibited': [
+        'SERVER DELETE PROHIBITED', 'SERVERDELETEPROHIBITED', 'Deletion forbidden'
+    ],
     'serverHold': ['SERVER HOLD', 'SERVERHOLD'],
     'serverRenewProhibited': ['SERVER RENEW PROHIBITED'],
     'serverTransferProhibited': ['SERVER TRANSFER PROHIBITED'],
-    'serverUpdateProhibited': ['SERVER UPDATE PROHIBITED', 'Sponsoring registrar change forbidden'],
+    'serverUpdateProhibited': [
+        'SERVER UPDATE PROHIBITED', 'Sponsoring registrar change forbidden'
+    ],
     'transferPeriod': ['TRANSFER PERIOD'],
     'transferLocked': ['TRANSFER LOCKED'],
     'clientHold': ['CLIENT HOLD'],
     'clientDeleteProhibited': ['CLIENT DELETE PROHIBITED', 'DELETE PROHIBITED'],
     'clientTransferProhibited': ['CLIENT TRANSFER PROHIBITED', 'TRANSFER PROHIBITED'],
-    'clientUpdateProhibited': ['CLIENT UPDATE PROHIBITED', 'UPDATE PROHIBITED', 'Registrant change forbidden'],
+    'clientUpdateProhibited': [
+        'CLIENT UPDATE PROHIBITED', 'UPDATE PROHIBITED', 'Registrant change forbidden'
+    ],
     'clientRenewProhibited': ['CLIENT RENEW PROHIBITED', 'RENEW PROHIBITED'],
     'Administratively blocked': ['Administratively blocked']
 }
 inverted_epp_dict = {val: key for key, arr in epp_codes.items() for val in arr}
 epp_re = re.compile(
-    "(" + '|'.join(list(inverted_epp_dict.keys())) + "|" + '|'.join(list(inverted_epp_dict.values())) + ")",
+    "(" + '|'.join(list(inverted_epp_dict.keys())) +
+    "|" + '|'.join(list(inverted_epp_dict.values())) + ")",
     re.MULTILINE | re.IGNORECASE
 )
 
 pop_these = [
-    "query", "reg_name", "data_validation", "relevant_dates", "regnr", "disclaimer", "holder", "nsset",
-    "connected_date", "changed", "free_date", "person", "fax_no", "phone", "nic_hdl", "address", "url",
-    "source", "mnt_by", "dom_public", "country_loc", "organization_loc", "person_loc", "postal_code_loc",
-    "created", "nic_hdl_br", "nslastaa", "nsstat", "owner_c", "outzone", "delete", "more_information_at_http",
-    "pid", "in_zone", "register_your_domain_name_at_https", "notice", "under_the_terms_and_conditions_at_https",
-    "idn_tag", "family_name", "given_name", "reseller", "status_information", "re_registration_status"
+    "query", "reg_name", "data_validation", "relevant_dates", "regnr", "disclaimer",
+    "holder", "nsset", "connected_date", "changed", "free_date", "person", "fax_no", "phone",
+    "nic_hdl", "address", "url", "source", "mnt_by", "dom_public", "country_loc",
+    "person_loc", "postal_code_loc", "created", "nic_hdl_br", "nslastaa", "nsstat", "owner_c",
+    "outzone", "delete", "more_information_at_http", "pid", "in_zone", "organization_loc",
+    "register_your_domain_name_at_https", "notice", "under_the_terms_and_conditions_at_https",
+    "idn_tag", "family_name", "given_name", "reseller", "status_information",
+    "re_registration_status"
 ]
 
 DATE_FORMATS = [
@@ -167,7 +202,8 @@ DATE_FORMATS = [
     '%B %d %Y',                     # January 01 2000
 ]
 date_fields = [
-    'domain_created_date', 'domain_updated_date', 'domain_expiry_date', 'registrar_registration_expiration_date'
+    'domain_created_date', 'domain_updated_date', 'domain_expiry_date',
+    'registrar_registration_expiration_date'
 ]
 contact_fields = [
     'registrant_', 'admin_', 'tech_', 'billing_', 'zone_'
@@ -229,22 +265,22 @@ def _dedupe_dates(lst: list, precision: str = "day", tz_aware: bool = False) -> 
     return list(dates_dict.values())
 
 
-class UnknownDateFormat(Exception):
+class UnknownDateFormat(Exception):  # pylint: disable=C0115
     """Custom Exception."""
-    pass
+    pass  # pylint: disable=W0107
 
 
-class DateTimeEncoder(json.JSONEncoder):
-    def default(self, obj):
+class DateTimeEncoder(json.JSONEncoder):  # pylint: disable=C0115
+    def default(self, obj):  # pylint: disable=W0221
         if isinstance(obj, (datetime, datetime.date, datetime.time)):
             return obj.isoformat()
-        elif isinstance(obj, timedelta):
+        if isinstance(obj, timedelta):
             return (datetime.min + obj).time().isoformat()
 
         return super(DateTimeEncoder, self).default(obj)
 
 
-class Normaliser:
+class Normaliser:  # pylint: disable=C0115
 
     date_as_string: bool = None
 
@@ -280,7 +316,8 @@ class Normaliser:
                 grouped.update({key: value})
         return grouped
 
-    def _organise(self, data: dict) -> dict:
+    @staticmethod
+    def _organise(data: dict) -> dict:  # pylint: disable=R0912, R0915
         """Organise & map the data appropriately.
         :param data: data dict
         :return: organised data dict
@@ -288,8 +325,7 @@ class Normaliser:
         def _no_http(var):
             if var.startswith('http'):
                 return False
-            else:
-                return True
+            return True
 
         if 'domain_name' in data:
             if isinstance(data.get('domain_name'), list):
@@ -318,7 +354,8 @@ class Normaliser:
                 data['email'] = ', '.join(_dedupe_list(data.get('email')))
         if 'domain_status' in data:
             if isinstance(data.get('domain_status'), list):
-                data['domain_status'] = flatten([i.split() for i in _dedupe_list(data.get('domain_status'))])
+                data['domain_status'] = flatten([i.split()
+                                                 for i in _dedupe_list(data.get('domain_status'))])
             elif isinstance(data.get('domain_status'), str):
                 data['domain_status'] = data['domain_status'].split()
             data['domain_status'] = ' '.join(list(filter(_no_http, data['domain_status'])))
@@ -339,13 +376,16 @@ class Normaliser:
                 if len(data['domain_updated_date']) == 1:
                     data['domain_updated_date'] = data['domain_updated_date'][0]
                 elif len(data['domain_updated_date']) > 1:
-                    data['domain_updated_date'] = max([str(d) for d in data['domain_updated_date']])
+                    data['domain_updated_date'] = \
+                        max([str(d) for d in data['domain_updated_date']])
         if 'registrar_abuse_contact_email' in data:
             if isinstance(data.get('registrar_abuse_contact_email'), list):
-                data['registrar_abuse_contact_email'] = ', '.join(_dedupe_list(data['registrar_abuse_contact_email']))
+                data['registrar_abuse_contact_email'] = \
+                    ', '.join(_dedupe_list(data['registrar_abuse_contact_email']))
         if 'registrar_abuse_contact_phone' in data:
             if isinstance(data.get('registrar_abuse_contact_phone'), list):
-                data['registrar_abuse_contact_phone'] = ', '.join(_dedupe_list(data['registrar_abuse_contact_phone']))
+                data['registrar_abuse_contact_phone'] = \
+                    ', '.join(_dedupe_list(data['registrar_abuse_contact_phone']))
         if 'registrar_iana_id' in data:
             if isinstance(data.get('registrar_iana_id'), list):
                 data['registrar_iana_id'] = ', '.join(_dedupe_list(data['registrar_iana_id']))
@@ -357,7 +397,8 @@ class Normaliser:
                 data['registrar_url'] = ', '.join(_dedupe_list(data['registrar_url']))
         if 'registrar_whois_server' in data:
             if isinstance(data.get('registrar_whois_server'), list):
-                data['registrar_whois_server'] = ', '.join(_dedupe_list(data['registrar_whois_server']))
+                data['registrar_whois_server'] = \
+                    ', '.join(_dedupe_list(data['registrar_whois_server']))
         if 'registry_domain_id' in data:
             if isinstance(data.get('registry_domain_id'), list):
                 data['registry_domain_id'] = ', '.join(_dedupe_list(data['registry_domain_id']))
@@ -398,16 +439,19 @@ class Normaliser:
                 address.append(data[f'{addr}street'].strip())
             if f'{addr}state_province' in data:
                 if isinstance(data[f'{addr}state_province'], list):
-                    data[f'{addr}state_province'] = ', '.join(_dedupe_list(data[f'{addr}state_province']))
+                    data[f'{addr}state_province'] = \
+                        ', '.join(_dedupe_list(data[f'{addr}state_province']))
                 address.append(data[f'{addr}state_province'].strip())
             if f'{addr}postal_code' in data:
                 if isinstance(data[f'{addr}postal_code'], list):
-                    data[f'{addr}postal_code'] = ', '.join(_dedupe_list(data[f'{addr}postal_code']))
+                    data[f'{addr}postal_code'] = \
+                        ', '.join(_dedupe_list(data[f'{addr}postal_code']))
                 postal = data[f'{addr}postal_code'].strip()
             if f'{addr}country' in data:
                 if isinstance(data[f'{addr}country'], list):
                     data[f'{addr}country'] = ', '.join(_dedupe_list(data[f'{addr}country']))
-                address.append(f"{data[f'{addr}country'].strip()} {postal if postal else ''}".strip())
+                address.append(f"{data[f'{addr}country'].strip()} "
+                               f"{postal if postal else ''}".strip())
             if f'{addr}phone' in data:
                 if isinstance(data[f'{addr}phone'], list):
                     data[f'{addr}phone'] = ', '.join(_dedupe_list(data[f'{addr}phone']))
@@ -447,7 +491,8 @@ class Normaliser:
 
         return result
 
-    def _standardise_dates(self, data: dict) -> dict:
+    @staticmethod
+    def _standardise_dates(data: dict) -> dict:
         """Normalise all available date fields.
         :param data: data dict
         :return: date normalised data dict

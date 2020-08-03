@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import sys
 from allwhois import whois
-from pprint import pprint
 
 test_domains = {
     'google': [
@@ -10,7 +9,7 @@ test_domains = {
         "mx", "lu", "lv", "cz", "it", "ie", "be", "me", "eu", "ru", "cc", "do", "de", "pl", "fi",
         "fr", "in", "cn", "tw", "ro", "sk", "nl", "cat", "hk",
         "co.ve", "co.cr", "co.id", "co.il", "co.uk", "co.jp", "com.hk"
-        "name", "info", "space", "online", "link", "mobi", "jobs"
+        "name", "info", "space", "online", "link", "mobi", "jobs", "tech"
     ],
     'northampton': ["ac.uk"],
     'ox': ["ac.uk"],

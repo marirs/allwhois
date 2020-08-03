@@ -56,7 +56,7 @@ def _log_error(error_str):
             fhand = open(error_log_fname, 'w')
         fhand.write('[%s] %s\r\n' % (_datetime.datetime.now().isoformat(), error_str))
         fhand.close()
-    except Exception:
+    except Exception:  # pylint: disable=W0703
         pass
 
 
@@ -88,11 +88,12 @@ def filecache(seconds_of_validity=None, fail_silently=False):
             try:
                 key = _args_key(function, args, kwargs)
 
-                if key in function._db:
-                    rv = function._db[key]
-                    if seconds_of_validity is None or _time.time() - rv.timesig < seconds_of_validity:
+                if key in function._db:     # pylint: disable=W0212
+                    rv = function._db[key]  # pylint: disable=W0212
+                    if seconds_of_validity is None or \
+                            _time.time() - rv.timesig < seconds_of_validity:
                         return rv.data
-            except Exception:
+            except Exception:  # pylint: disable=W0703
                 # in any case of failure, don't let filecache break the program
                 error_str = _traceback.format_exc()
                 _log_error(error_str)
@@ -103,11 +104,12 @@ def filecache(seconds_of_validity=None, fail_silently=False):
 
             # store in cache
             # NOTE: no need to _db.sync() because there was no mutation
-            # NOTE: it's importatnt to do _db.sync() because otherwise the cache doesn't survive Ctrl-Break!
+            # NOTE: it's importatnt to do _db.sync() because otherwise
+            # the cache doesn't survive Ctrl-Break!
             try:
-                function._db[key] = _retval(_time.time(), retval)
-                function._db.sync()
-            except Exception:
+                function._db[key] = _retval(_time.time(), retval)   # pylint: disable=W0212
+                function._db.sync()                                 # pylint: disable=W0212
+            except Exception:  # pylint: disable=W0703
                 # in any case of failure, don't let filecache break the program
                 error_str = _traceback.format_exc()
                 _log_error(error_str)
@@ -120,21 +122,21 @@ def filecache(seconds_of_validity=None, fail_silently=False):
         if not hasattr(function, '_db'):
             cache_name = _get_cache_name(function)
             if cache_name in OPEN_DBS:
-                function._db = OPEN_DBS[cache_name]
+                function._db = OPEN_DBS[cache_name]         # pylint: disable=W0212
             else:
-                function._db = _shelve.open(cache_name)
-                OPEN_DBS[cache_name] = function._db
-                atexit.register(function._db.close)
+                function._db = _shelve.open(cache_name)     # pylint: disable=W0212
+                OPEN_DBS[cache_name] = function._db         # pylint: disable=W0212
+                atexit.register(function._db.close)         # pylint: disable=W0212
 
-            function_with_cache._db = function._db
+            function_with_cache._db = function._db          # pylint: disable=W0212
 
         return function_with_cache
 
     if isinstance(seconds_of_validity, types.FunctionType):
-        # support when used as '@filecache.filecache' instead of '@filecache.filecache()'
+        # support when used as '@filecache.filecache'
+        # instead of '@filecache.filecache()'
         func = seconds_of_validity
         seconds_of_validity = None
         return filecache_decorator(func)
 
     return filecache_decorator
-

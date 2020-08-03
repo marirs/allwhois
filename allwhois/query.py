@@ -13,7 +13,7 @@ from .normalise import Normaliser
 from ._filecache import filecache, DAY
 
 
-class _NestedNamespace(SimpleNamespace):
+class _NestedNamespace(SimpleNamespace):  # pylint: disable=C0115, R0903
     def __init__(self, dictionary, **kwargs):
         super().__init__(**kwargs)
         for key, value in dictionary.items():
@@ -23,7 +23,7 @@ class _NestedNamespace(SimpleNamespace):
                 self.__setattr__(key, value)
 
 
-class Query:
+class Query:  # pylint: disable=C0115, R0903
     executable: str = which('whois')
     encoding: str = 'utf-8'
 
@@ -41,16 +41,16 @@ class Query:
             output = subprocess.check_output(args, timeout=5)  # pragma: no cover
         except subprocess.CalledProcessError as grepexc:
             output = grepexc.output
-        except subprocess.TimeoutExpired as t:
+        except subprocess.TimeoutExpired:
             output = "Timed out."
         try:
             output = output.decode(self.encoding)
         except AttributeError:
             output = None
-        except:
+        except:  # pylint: disable=W0702
             try:
                 output = output.decode('ISO-8859-1')
-            except:
+            except:  # pylint: disable=W0702
                 output = output.decode('latin')
         return output
 
@@ -85,14 +85,14 @@ class Query:
             ver = ver.split('\n')[0]
             if 'illegal option' in ver:
                 raise FileNotFoundError('macos native whois not supported. install whois via brew')
-            elif 'Version' in ver:
+            if 'Version' in ver:
                 ver_no = ver.split(' ', 1)[-1]
-                if not LooseVersion(ver_no) > LooseVersion("5.5"):
+                if LooseVersion(ver_no) <= LooseVersion("5.5"):
                     raise ValueError("whois version should be >5.5, upgrade whois package")
         else:
             raise ValueError("whois version could not be determined, upgrade whois package")
 
-    def to_dict(self):
+    def to_dict(self):  # pylint: disable=C0116
         return self.__dict__
 
     def query(self, domain_name: str, date_as_string: bool = False):
