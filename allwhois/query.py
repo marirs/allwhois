@@ -38,14 +38,20 @@ class Query:
         This method is normally mocked in tests
         """
         try:
-            output = subprocess.check_output(args)  # pragma: no cover
+            output = subprocess.check_output(args, timeout=5)  # pragma: no cover
         except subprocess.CalledProcessError as grepexc:
             output = grepexc.output
-
+        except subprocess.TimeoutExpired as t:
+            output = "Timed out."
         try:
             output = output.decode(self.encoding)
+        except AttributeError:
+            output = None
         except:
-            output = output.decode('ISO-8859-1')
+            try:
+                output = output.decode('ISO-8859-1')
+            except:
+                output = output.decode('latin')
         return output
 
     def _args(self, domain):
@@ -101,10 +107,20 @@ class Query:
         domain = self._preflight(domain_name)
         args = list(self._args(domain))
         output = self._execute(args)
-        if "no match for " in output.lower():
+        if not output:
+            result = {
+                'domain_name': domain_name,
+                'msg': 'fail'
+            }
+        elif "no match for " in output.lower():
             result = {
                 'domain_name': domain_name,
                 'msg': 'No match'
+            }
+        elif "timed out" in output.lower():
+            result = {
+                'domain_name': domain_name,
+                'msg': 'Timeout error'
             }
         else:
             dict_o = Parser()
