@@ -44,14 +44,14 @@ class Query:  # pylint: disable=C0115, R0903
         except subprocess.TimeoutExpired:
             output = "Timed out."
         try:
-            output = output.decode(self.encoding)
+            output = output.decode(self.encoding)  # pragma: no cover
         except AttributeError:
             output = None
         except:  # pylint: disable=W0702
             try:
-                output = output.decode('ISO-8859-1')
+                output = output.decode('ISO-8859-1')  # pragma: no cover
             except:  # pylint: disable=W0702
-                output = output.decode('latin')
+                output = output.decode('latin')  # pragma: no cover
         return output
 
     def _args(self, domain):
@@ -93,7 +93,7 @@ class Query:  # pylint: disable=C0115, R0903
             raise ValueError("whois version could not be determined, upgrade whois package")
 
     def to_dict(self):  # pylint: disable=C0116
-        return self.__dict__
+        return self.__dict__  # pragma: no cover
 
     def query(self, domain_name: str, date_as_string: bool = False):
         """
@@ -108,7 +108,7 @@ class Query:  # pylint: disable=C0115, R0903
         args = list(self._args(domain))
         output = self._execute(args)
         if not output:
-            result = {
+            result = {  # pragma: no cover
                 'domain_name': domain_name,
                 'msg': 'fail'
             }
@@ -118,7 +118,7 @@ class Query:  # pylint: disable=C0115, R0903
                 'msg': 'No match'
             }
         elif "timed out" in output.lower():
-            result = {
+            result = {  # pragma: no cover
                 'domain_name': domain_name,
                 'msg': 'Timeout error'
             }
@@ -144,7 +144,7 @@ class Query:  # pylint: disable=C0115, R0903
                 normaliser.date_as_string = date_as_string
                 result = normaliser.normalise(result)
                 if result['domain_info']['name'] == '':
-                    result['domain_info']['name'] = domain
+                    result['domain_info']['name'] = domain  # pragma: no cover
 
         # return the final result
         return result
