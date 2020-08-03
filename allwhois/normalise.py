@@ -16,16 +16,22 @@ from typing import Union, List
 template0 = {
     # Unified Key: [Keys from various sources]
     'domain_name': ['domainName', 'domain', 'domainname'],
-    'domain_created_date': ['domain_created', 'createDate', 'createdDate', 'connected_date', 'registered', 'registered_date', 'created_on', 'registered_on', 'registration_time', 'domain_record_activated', 'entry_created', 'create_date', 'creation_date', 'record_created'],
-    'domain_expiry_date': ['validity', 'expiration_date', 'expire', 'expire_date', 'renewal_date', 'expiry_date', 'domain_expires', 'expired_date', 'paid_till', 'expires', 'expiration_time', 'expires_on', 'expiresDate', 'registry_expiry_date', 'expires_date', 'record_expires_on'],
+    'domain_canonical_name': ['canonical_name'],
+    'domain_created_date': ['domain_name_commencement_date', 'domain_created', 'createDate', 'createdDate', 'connected_date', 'registered', 'registered_date', 'created_on', 'registered_on', 'registration_time', 'domain_record_activated', 'entry_created', 'create_date', 'creation_date', 'record_created'],
+    'domain_expiry_date': ['validity', 'valid_until', 'expiration_date', 'expire', 'expire_date', 'renewal_date', 'expiry_date', 'domain_expires', 'expired_date', 'paid_till', 'expires', 'expiration_time', 'expires_on', 'expiresDate', 'registry_expiry_date', 'expires_date', 'record_expires_on'],
     'domain_updated_date': ['updated_on', 'last_updated_on', 'updateDate', 'updatedDate', 'update_date', 'updated', 'entry_updated', 'domain_record_last_updated', 'modified', 'last_updated', 'updated_date', 'last_update', 'last_modified', 'record_last_updated_on'],
-    'domain_name_servers': ['dns', 'servers', 'nserver', 'domain_servers', 'name_servers', 'name_server_', 'domain_servers_in_listed_order', 'name_servers_in_the_listed_order', 'nameserver', 'nameservers', 'name_server', 'dns_servers'],
-    'domain_status': ['flags', 'domainStatus', 'registration_status', 'state', 'domain_status_', 'status', 'domain_status'],
+    'domain_name_servers': ['dns', 'servers', 'nserver', 'domain_servers', 'name_servers', 'name_server_', 'domain_servers_in_listed_order', 'name_servers_in_the_listed_order', 'name_server_information', 'nameserver', 'nameservers', 'name_server', 'dns_servers', 'name_servers_information'],
+    'domain_status': ['epp_status', 'flags', 'domainStatus', 'registration_status', 'state', 'domain_status_', 'status', 'domain_status'],
     'contact_email': ['contactEmail'],
-    'registrant_name': ['domain_owner', 'registrant', 'registrant_contact', 'organization', "owner"],
-    'registrant_id': ['ownerid', 'org_id'],
+    'registrant_name': ['domain_owner', 'registrant', 'registrant_contact', 'organization', 'owner', 'owner_name'],
+    'registrant_id': ['ownerid', 'org_id', 'owner_id'],
+    'registrant_country_code': ['owner_country_code'],
+    'registrant_email': ['owner_email'],
+    'registrant_locality': ['owner_locality'],
+    'registrant_locality_zipcode': ['owner_locality_zipcode'],
+    'registrant_zipcode': ['owner_zipcode'],
     'registrant_type': ['organization_type'],
-    'registrant_address': ['address_loc', 'descr'],
+    'registrant_address': ['address_loc', 'descr', 'owner_address'],
     'registrar_name': ['domain_registrar_name', 'registrar', 'sponsoring_registrar_name', 'registrarName'],
     'registrar_id': ['sponsoring_registrar_pandi_id', 'sponsoring_registrar_id'],
     'registrar_city': ['sponsoring_registrar_city'],
@@ -39,7 +45,7 @@ template0 = {
     'registrar_whois_url': ['domain_registrar_url'],
     'registrar_iana_id': ['IANAID', 'domain_registrar_id', 'registrarIANAID'],
     'admin_contact': ['administrative_contact', 'admin_c'],
-    'tech_contact': ['technical_contact', 'tech_c'],
+    'tech_contact': ['technical_contact', 'tech_c', 'technical_contact_information'],
     'zone_contact': ['zone_c'],
     'domain_dnssec': ['dnssec'],
     'domain_dnssec_ds_data': ['dnssec_ds_data'],
@@ -47,7 +53,8 @@ template0 = {
 
 sub_keys_template0 = {
     # sub keys
-    'zip': ['postalCode', 'postal_code'],
+    'zip': ['postalCode', 'postal_code', 'zipcode'],
+    'locality_zip': ['locality_zipcode'],
     'fax_ext': ['faxExt', 'fax_ext'],
     'telephone': ['phone'],
     'telephone_ext': ['telephoneExt', 'telephone_ext', 'phone_ext'],
@@ -100,6 +107,7 @@ pop_these = [
     "source", "mnt_by", "dom_public", "country_loc", "organization_loc", "person_loc", "postal_code_loc",
     "created", "nic_hdl_br", "nslastaa", "nsstat", "owner_c", "outzone", "delete", "more_information_at_http",
     "pid", "in_zone", "register_your_domain_name_at_https", "notice", "under_the_terms_and_conditions_at_https",
+    "idn_tag", "family_name", "given_name", "reseller", "status_information", "re_registration_status"
 ]
 
 DATE_FORMATS = [
@@ -122,6 +130,7 @@ DATE_FORMATS = [
     '%Y-%m-%d %H:%M:%S.%f',         # 2011-09-08 14:44:51 CLST CL
     '%d.%m.%Y %H:%M:%S',            # 19.09.2002 13:00:00
     '%d-%b-%Y %H:%M:%S %Z',         # 24-Jul-2009 13:20:03 UTC
+    '%d/%m/%Y %H:%M:%S',            # 30/10/2002 00:00:00
     '%Y/%m/%d %H:%M:%S (%z)',       # 2011/06/01 01:05:01 (+0900)
     '%Y-%m-%d %H:%M:%S (%z)',       # 2011/06/01 01:05:01 (+0900)
     '%Y/%m/%d %H:%M:%S%z',          # 2011/06/01 01:05:01+0900
@@ -250,7 +259,8 @@ class Normaliser:
         :return: grouped keys dict
         """
         keys_to_group = (
-            "registry_", "registrar_", "registrant_", "domain_", "admin_", "tech_", "billing_", "zone_"
+            "registry_", "registrar_", "registrant_", "domain_", "admin_",
+            "tech_", "billing_", "zone_", "option_", "company_"
         )
         for key in pop_these:
             # remove keys that are not necessary
@@ -286,6 +296,9 @@ class Normaliser:
                 data['domain_name'] = ', '.join(_dedupe_list(data.get('domain_name')))
         else:
             data['domain_name'] = ''
+        if 'company_name' in data:
+            if isinstance(data.get('company_name'), list):
+                data['company_name'] = ', '.join(_dedupe_list(data.get('company_name')))
         if 'domain_dnssec' in data:
             if isinstance(data.get('domain_dnssec'), list):
                 data['domain_dnssec'] = ', '.join(_dedupe_list(data.get('domain_dnssec')))
@@ -300,6 +313,9 @@ class Normaliser:
                 if '\t' in ns.strip() else ns
                 for ns in data['domain_name_servers']
             ]
+        if 'email' in data:
+            if isinstance(data.get('email'), list):
+                data['email'] = ', '.join(_dedupe_list(data.get('email')))
         if 'domain_status' in data:
             if isinstance(data.get('domain_status'), list):
                 data['domain_status'] = flatten([i.split() for i in _dedupe_list(data.get('domain_status'))])
@@ -377,18 +393,30 @@ class Normaliser:
             address = []
             postal = None
             if f'{addr}street' in data:
+                if isinstance(data[f'{addr}street'], list):
+                    data[f'{addr}street'] = ', '.join(_dedupe_list(data[f'{addr}street']))
                 address.append(data[f'{addr}street'].strip())
             if f'{addr}state_province' in data:
+                if isinstance(data[f'{addr}state_province'], list):
+                    data[f'{addr}state_province'] = ', '.join(_dedupe_list(data[f'{addr}state_province']))
                 address.append(data[f'{addr}state_province'].strip())
             if f'{addr}postal_code' in data:
+                if isinstance(data[f'{addr}postal_code'], list):
+                    data[f'{addr}postal_code'] = ', '.join(_dedupe_list(data[f'{addr}postal_code']))
                 postal = data[f'{addr}postal_code'].strip()
             if f'{addr}country' in data:
+                if isinstance(data[f'{addr}country'], list):
+                    data[f'{addr}country'] = ', '.join(_dedupe_list(data[f'{addr}country']))
                 address.append(f"{data[f'{addr}country'].strip()} {postal if postal else ''}".strip())
             if f'{addr}phone' in data:
+                if isinstance(data[f'{addr}phone'], list):
+                    data[f'{addr}phone'] = ', '.join(_dedupe_list(data[f'{addr}phone']))
                 ph = data[f'{addr}phone'].strip()
                 if ph:
                     address.append(f"Phone: {ph}")
             if f'{addr}fax' in data:
+                if isinstance(data[f'{addr}fax'], list):
+                    data[f'{addr}fax'] = ', '.join(_dedupe_list(data[f'{addr}fax']))
                 fax = data[f'{addr}fax'].strip()
                 if fax:
                     address.append(f"Fax: {fax}")
