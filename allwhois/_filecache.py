@@ -18,6 +18,7 @@ import atexit
 _retval = _collections.namedtuple('_retval', 'timesig data')
 _SRC_DIR = _os.path.dirname(_os.path.abspath(__file__))
 _CACHE_STORE = '.cache'
+_MODULE_SUFFIX = '_' + _os.path.basename(_os.path.splitext(_sys.argv[0])[0])
 
 SECOND = 1
 MINUTE = 60 * SECOND
@@ -42,14 +43,14 @@ def _get_cache_name(function):
 
     # fix for '<string>' or '<stdin>' in exec or interpreter usage.
     cache_name = cache_name.replace('<', '').replace('>', '')
-    cache_name = _os.path.join(_CACHE_STORE, f'{cache_name}.cache')
+    cache_name = _os.path.join(_CACHE_STORE, f'{cache_name}{_MODULE_SUFFIX}.cache')
 
     return cache_name
 
 
 def _log_error(error_str):
     try:
-        error_log_fname = _os.path.join(_SRC_DIR, 'filecache.err.log')
+        error_log_fname = _os.path.join(_SRC_DIR, 'filecache{_MODULE_SUFFIX}.err.log')
         if _os.path.isfile(error_log_fname):
             fhand = open(error_log_fname, 'a')
         else:
